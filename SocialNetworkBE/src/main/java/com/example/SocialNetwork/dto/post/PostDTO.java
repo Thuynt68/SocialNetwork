@@ -35,6 +35,10 @@ public class PostDTO {
         this.images = Optional.ofNullable(post.getImageList())
                 .orElseGet(ArrayList::new).stream().map(ImageDTO::new).toList();
         this.time = post.getCreatedTime();
+        if (post.getGroup() != null){
+            this.groupId = post.getGroup().getId();
+            this.groupName = post.getGroup().getName();
+        }
 
         this.author = new UserDTO(post.getAuthor());
         this.approvalStatus = post.getApprovalStatus();
