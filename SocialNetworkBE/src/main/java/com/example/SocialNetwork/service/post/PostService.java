@@ -4,7 +4,12 @@ import com.example.SocialNetwork.dto.post.PostDTO;
 import com.example.SocialNetwork.entity.Post;
 import com.example.SocialNetwork.entity.PostStatus;
 import com.example.SocialNetwork.entity.User;
+import com.example.SocialNetwork.entity.group.Group;
+import com.example.SocialNetwork.entity.group.GroupMember;
+import com.example.SocialNetwork.entity.group.GroupRole;
 import com.example.SocialNetwork.repository.post.PostRepo;
+import com.example.SocialNetwork.service.group.GroupMemberService;
+import com.example.SocialNetwork.service.group.GroupService;
 import com.example.SocialNetwork.service.image.ImageService;
 import com.example.SocialNetwork.service.notification.NotificationService;
 import com.example.SocialNetwork.service.user.UserService;
@@ -23,6 +28,8 @@ public class PostService {
     PostRepo postRepo;
     UserService userService;
     ImageService imageService;
+    GroupService groupService;
+    GroupMemberService groupMemberService;
     NotificationService notificationService;
 
     public Post getById(Long id) {
@@ -42,7 +49,16 @@ public class PostService {
                 .createdTime(LocalDateTime.now())
                 .approvalStatus(request.getApprovalStatus())
                 .build();
-
+        if (request.getGroupId() != null){
+            Group group = groupService.getById(request.getGroupId());
+            post.setGroup(group);
+            GroupMember member = groupMemberService.getByGroupAndMember(group, requestor);
+            GroupRole memberRole = member.getRole();
+            if (memberRole.getLevel() >= 2){
+                post.setApprovalStatus(PostStatus.APPROVED);
+            }
+            else post.setApprovalStatus(PostStatus.PENDING);
+        }
         post = postRepo.save(post);
         return new PostDTO(post);
     }
@@ -60,6 +76,10 @@ public class PostService {
         postRepo.deleteById(id);
     }
 
+    public List<PostDTO> getPostsByGroup(Long groupId, PostStatus status) {
+        return postRepo.findByGroupIdAndApprovalStatus(groupId, status)
+                .stream().map(PostDTO::new).toList();
+    }
 
     public void approvePost(Long postId, PostStatus approvalStatus) {
         Post post = getById(postId);
@@ -67,6 +87,7 @@ public class PostService {
         if (approvalStatus.equals(PostStatus.APPROVED)){
             post.setApprovalStatus(PostStatus.APPROVED);
             post = postRepo.save(post);
+            notificationService.notifyAcceptPost(requestor, post);
         }
         else {
             postRepo.delete(post);

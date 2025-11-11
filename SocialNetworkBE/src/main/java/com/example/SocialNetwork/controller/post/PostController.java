@@ -58,6 +58,13 @@ public class PostController {
         postService.deletePost(id);
     }
 
+    @GetMapping("/group")
+    public ApiResponse<List<PostDTO>> getPostsByGroup(
+            @RequestParam Long groupId, @RequestParam PostStatus status) {
+        return ApiResponse.<List<PostDTO>>builder()
+                .result(postService.getPostsByGroup(groupId, status))
+                .build();
+    }
 
     @GetMapping("/user/{userId}")
     public ApiResponse<List<PostDTO>> getPostsByUserId(@PathVariable Long userId) {
