@@ -1,4 +1,4 @@
-package com.example.SocialNetwork.entity;
+package com.example.SocialNetwork.entity.group;
 
 import jakarta.persistence.*;
 import lombok.*;

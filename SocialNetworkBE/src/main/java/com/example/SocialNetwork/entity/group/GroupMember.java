@@ -1,5 +1,6 @@
-package com.example.SocialNetwork.entity;
+package com.example.SocialNetwork.entity.group;
 
+import com.example.SocialNetwork.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
