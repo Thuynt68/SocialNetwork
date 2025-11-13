@@ -1,7 +1,6 @@
 package com.example.SocialNetwork.dto.user;
 
 import com.example.SocialNetwork.entity.User;
-import com.example.SocialNetwork.entity.group.GroupMember;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -60,15 +59,6 @@ public class UserDTO implements Comparable<UserDTO>{
         this.dateOfBirth = user.getDateOfBirth();
     }
 
-    public UserDTO(GroupMember member) {
-        User user = member.getMember();
-        this.id = user.getId();
-        this.username = user.getUsername();
-        this.lastName = user.getLastName();
-        this.fullName = user.getFullName();
-        this.avatarUrl = user.getAvatarUrl();
-        this.groupRole = member.getRole().toString();
-    }
     @Override
     public int compareTo(UserDTO o) {
         return this.lastName.compareTo(o.lastName);

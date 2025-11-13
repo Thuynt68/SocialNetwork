@@ -7,3 +7,37 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: phanvanthi315.1@gmail.com
+    password: iqrp lbwx cout goar
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    fromName: "Mạng xã hội SNS 2024"
+    booking:
+      subject: "Xác nhận email đăng ký"
+    spring:
+      cloud:
+        gcp:
+          project-id: Msocial-network-d428b
+          storage:
+            bucket: social-network-d428b.appspot.com
+            credentials:
+              location: classpath:serviceAccountKey.json
+
+
+
+jwt:
+  signerKey: "bj0hKxleZxWk8mHcrceJBce84L5qniIsLM3UcEw6NZWiyTXXN3zTVFoBRB0BScPz"
+  validDuration: 9999
+  refreshableDuration: 9999
+
+frontend:
+  url: "http://localhost:3000"
+
+

@@ -1,6 +1,5 @@
 package com.example.SocialNetwork.entity;
 
-import com.example.SocialNetwork.entity.group.Group;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -30,9 +29,6 @@ public class Post {
 
     LocalDateTime createdTime;
     LocalDateTime updatedTime;
-
-    @ManyToOne
-    Group group;
 
     @Enumerated
     PostStatus approvalStatus;
